@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "openclose",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
