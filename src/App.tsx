@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonApp,
   IonHeader,
@@ -15,7 +15,15 @@ import {
   IonSelectOption,
   IonTextarea,
   IonButton,
+  IonIcon,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
 } from "@ionic/react";
+
+import { calculatorOutline, refreshOutline } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -38,12 +46,11 @@ import "./theme/variables.css";
 import TaskCard from "./components/TaskCard";
 
 const App: React.FC = () => {
-  const [text, setText] = useState<string>();
+  const [task, setTask] = useState({respArea: '', title: '', desc: ''});
+  const [preview, setPreview] = useState<boolean>(false);
 
-  function AddCard(){
-return(
-<h2>Hello!!!</h2>
-);
+  const togglePreview = () => {
+    setPreview(prevState => !prevState);
   };
 
   return (
@@ -59,7 +66,12 @@ return(
             <IonCol>
               <IonItem>
                 <IonLabel position="floating">Ansvarsområde</IonLabel>
-                <IonSelect value="bar" okText="Ok" cancelText="Avbryt">
+                <IonSelect
+                  value={task.respArea}
+                  okText="Ok"
+                  cancelText="Avbryt"
+                  onIonChange={(e) => setTask(prevState => ({...prevState, respArea: e.detail.value!}))}
+                >
                   <IonSelectOption value="bar">Bar</IonSelectOption>
                   <IonSelectOption value="golv">Golv</IonSelectOption>
                   <IonSelectOption value="gardeob">Garderob</IonSelectOption>
@@ -72,8 +84,11 @@ return(
           <IonRow>
             <IonCol>
               <IonItem>
-                <IonLabel position="floating">Uppgiftens namn</IonLabel>
-                <IonInput></IonInput>
+                <IonLabel position="floating">Uppgiftens titel</IonLabel>
+                <IonInput
+                  value={task.title}
+                  onIonChange={(e) => setTask(prevState => ({...prevState, title: e.detail.value!}))}
+                ></IonInput>
               </IonItem>
             </IonCol>
           </IonRow>
@@ -82,17 +97,47 @@ return(
               <IonItem>
                 <IonLabel position="floating">Beskrivning</IonLabel>
                 <IonTextarea
-                  value={text}
-                  onIonChange={(e) => setText(e.detail.value!)}
+                  value={task.desc}
+                  onIonChange={(e) => setTask(prevState => ({...prevState, desc: e.detail.value!}))}
                 ></IonTextarea>
               </IonItem>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton onClick={AddCard}>Click me!</IonButton>
+              <IonButton color="success" expand="block" size="large">
+                <IonIcon slot="start" icon={refreshOutline}></IonIcon>
+                Publicera
+              </IonButton>
             </IonCol>
           </IonRow>
+          <IonRow>
+            <IonCol className="ion-text-left">
+              <IonButton color="warning" expand="block" onClick={togglePreview}>
+                <IonIcon slot="start" icon={calculatorOutline}></IonIcon>
+                Förhandsvisa
+              </IonButton>
+            </IonCol>
+            <IonCol className="ion-text-right">
+              <IonButton color="danger" expand="block">
+                <IonIcon slot="start" icon={calculatorOutline}></IonIcon>
+                Avbryt
+              </IonButton>
+            </IonCol>
+          </IonRow>
+          {preview && (<IonRow>
+            <IonCol>
+              <IonCard>
+                <IonItem color="primary">Ingen bild vald</IonItem>
+                <IonCardHeader>
+                  <IonCardTitle>{task.title}</IonCardTitle>
+                </IonCardHeader>
+
+                <IonCardContent>{task.desc}</IonCardContent>
+                <IonButton>Klar</IonButton>
+              </IonCard>
+            </IonCol>
+          </IonRow>)}
         </IonGrid>
       </IonContent>
     </IonApp>
