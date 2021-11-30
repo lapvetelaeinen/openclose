@@ -50,7 +50,7 @@ return(
     <IonApp>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Lägg till uppgift</IonTitle>
+          <IonTitle>Lägg till uppgift for fucks sake</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
