@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -10,6 +11,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+defineCustomElements(window);
 
 
 // If you want to start measuring performance in your app, pass a function

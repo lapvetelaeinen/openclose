@@ -23,7 +23,8 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 
-import { calculatorOutline, refreshOutline } from "ionicons/icons";
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { calculatorOutline, camera, refreshOutline } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -48,9 +49,27 @@ import TaskCard from "./components/TaskCard";
 const App: React.FC = () => {
   const [task, setTask] = useState({respArea: '', title: '', desc: ''});
   const [preview, setPreview] = useState<boolean>(false);
+  const [imagePath, setImagePath] = useState<any>('');
 
   const togglePreview = () => {
     setPreview(prevState => !prevState);
+  };
+
+  const takePicture = async () => {
+    try { const cameraResult = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Uri
+    });
+  
+    const path = cameraResult?.path || cameraResult?.webPath;
+
+    setImagePath(path);
+
+    return true;
+  } catch (e:any) {
+    console.log(e);
+  }
   };
 
   return (
@@ -101,6 +120,13 @@ const App: React.FC = () => {
                   onIonChange={(e) => setTask(prevState => ({...prevState, desc: e.detail.value!}))}
                 ></IonTextarea>
               </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton onClick={takePicture} size="large">
+                <IonIcon icon={camera}></IonIcon>
+              </IonButton>
             </IonCol>
           </IonRow>
           <IonRow>
