@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import {
   IonApp,
+  IonRouterOutlet,
   IonHeader,
   IonContent,
   IonToolbar,
@@ -23,7 +24,9 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { IonReactRouter } from "@ionic/react-router";
+
+import { Camera, CameraResultType } from "@capacitor/camera";
 import { calculatorOutline, camera, refreshOutline } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -44,128 +47,27 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./theme/custom-components.css";
+
 import TaskCard from "./components/TaskCard";
+import { Redirect, Route } from "react-router";
+import Login from "./pages/Login";
+import AddTask from "./pages/AddTask";
+import Dashboard from "./pages/Dashboard";
 
 const App: React.FC = () => {
-  const [task, setTask] = useState({respArea: '', title: '', desc: ''});
-  const [preview, setPreview] = useState<boolean>(false);
-  const [imagePath, setImagePath] = useState<any>('');
 
-  const togglePreview = () => {
-    setPreview(prevState => !prevState);
-  };
-
-  const takePicture = async () => {
-    try { const cameraResult = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.Uri
-    });
-  
-    const path = cameraResult?.path || cameraResult?.webPath;
-
-    setImagePath(path);
-
-    return true;
-  } catch (e:any) {
-    console.log(e);
-  }
-  };
 
   return (
     <IonApp>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Lägg till uppgift for fucks sake</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonLabel position="floating">Ansvarsområde</IonLabel>
-                <IonSelect
-                  value={task.respArea}
-                  okText="Ok"
-                  cancelText="Avbryt"
-                  onIonChange={(e) => setTask(prevState => ({...prevState, respArea: e.detail.value!}))}
-                >
-                  <IonSelectOption value="bar">Bar</IonSelectOption>
-                  <IonSelectOption value="golv">Golv</IonSelectOption>
-                  <IonSelectOption value="gardeob">Garderob</IonSelectOption>
-                  <IonSelectOption value="kök">Kök</IonSelectOption>
-                  <IonSelectOption value="disk">Disk</IonSelectOption>
-                </IonSelect>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonLabel position="floating">Uppgiftens titel</IonLabel>
-                <IonInput
-                  value={task.title}
-                  onIonChange={(e) => setTask(prevState => ({...prevState, title: e.detail.value!}))}
-                ></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonLabel position="floating">Beskrivning</IonLabel>
-                <IonTextarea
-                  value={task.desc}
-                  onIonChange={(e) => setTask(prevState => ({...prevState, desc: e.detail.value!}))}
-                ></IonTextarea>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonButton onClick={takePicture} size="large">
-                <IonIcon icon={camera}></IonIcon>
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonButton color="success" expand="block" size="large">
-                <IonIcon slot="start" icon={refreshOutline}></IonIcon>
-                Publicera
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol className="ion-text-left">
-              <IonButton color="warning" expand="block" onClick={togglePreview}>
-                <IonIcon slot="start" icon={calculatorOutline}></IonIcon>
-                Förhandsvisa
-              </IonButton>
-            </IonCol>
-            <IonCol className="ion-text-right">
-              <IonButton color="danger" expand="block">
-                <IonIcon slot="start" icon={calculatorOutline}></IonIcon>
-                Avbryt
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          {preview && (<IonRow>
-            <IonCol>
-              <IonCard>
-                <IonItem color="primary">Ingen bild vald</IonItem>
-                <IonCardHeader>
-                  <IonCardTitle>{task.title}</IonCardTitle>
-                </IonCardHeader>
-
-                <IonCardContent>{task.desc}</IonCardContent>
-                <IonButton>Klar</IonButton>
-              </IonCard>
-            </IonCol>
-          </IonRow>)}
-        </IonGrid>
-      </IonContent>
+      <IonReactRouter>
+        <IonRouterOutlet>
+        <Route path="/login" component={Login} />
+        <Route path="/addtask" component={AddTask} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Redirect exact from="/" to="/login" />
+        </IonRouterOutlet>
+      </IonReactRouter>
     </IonApp>
   );
 };
