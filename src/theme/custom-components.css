@@ -11,3 +11,34 @@
   margin-bottom: 10px;
   margin-right: 10px;
 }
+
+.task-list-item {
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  padding: 20px;
+  text-align: center;
+  font-size: 40px;
+  line-height: 0;
+  background-color: rgb(129, 129, 129);
+  border-radius: 70px;
+}
+
+.title-text {
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.center-box {
+  height: 80%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

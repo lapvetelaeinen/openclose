@@ -50,13 +50,15 @@ import "./theme/variables.css";
 import "./theme/custom-components.css";
 
 import TaskCard from "./components/TaskCard";
-import { Redirect, Route } from "react-router";
+import { Redirect, Route, useHistory } from "react-router";
 import Login from "./pages/Login";
 import AddTask from "./pages/AddTask";
 import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
+import Register from "./components/auth/Register";
+import Welcome from "./pages/Welcome";
 
 const App: React.FC = () => {
-
 
   return (
     <IonApp>
@@ -65,6 +67,9 @@ const App: React.FC = () => {
         <Route path="/login" component={Login} />
         <Route path="/addtask" component={AddTask} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/tasks" component={Tasks} />
+        <Route path="/register" component={Register} />
+        <Route path="/welcome" component={Welcome} />
         <Redirect exact from="/" to="/login" />
         </IonRouterOutlet>
       </IonReactRouter>
